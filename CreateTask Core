@@ -1,0 +1,32 @@
+%%[ set @activityrows = LookupRows("RS_Activities_Creation","ActivityIsCreated","False")
+    set @rowCount = RowCount(@activityrows)
+    if @rowCount > 0 then
+
+  for @i = 1 to @rowCount do
+
+    
+    set @row = row(@activityrows, @i) /* get row based on counter */
+    set @UUID = field(@row,"UUID")
+    set @WhoId = field(@row,"WhoId")
+    set @Description = field(@row,"Description")
+    set @Subject = field(@row,"Subject")
+    set @Status = field(@row,"Status")
+    set @WhoId = field(@row,"WhoId")
+    set @Priority = field(@row,"Priority")
+    set @OwnerId = field(@row,"OwnerId")
+    set @Type = field(@row,"Type")
+    set @Priority = field(@row,"Priority")
+    set @OwnerId = field(@row,"OwnerId")
+    set @RecordTypeId = field(@row,"RecordTypeId")
+    set @Job__c = field(@row,"Job__c")
+    set @WhatId = field(@row,"WhatId")
+    set @UserOpco__c = field(@row,"UserOpco__c")
+   If NOT EMPTY(@Job__c) then
+  SET @createtask = CreateSalesforceObject('Task','10', 'WhoId',@WhoId, 'Description',@Description, 'Subject',@Subject, 'Status', @Status,'Priority',@Priority,'OwnerId',@OwnerId,'Type',@Type,'RecordTypeId',@RecordTypeId,'Job__c',@Job__c,'UserOpco__c',@UserOpco__c)
+ELSE
+SET @createtask =  CreateSalesforceObject('Task','10', 'WhoId',@WhoId, 'Description',@Description, 'Subject',@Subject, 'Status', @Status,'Priority',@Priority,'OwnerId',@OwnerId,'Type',@Type,'RecordTypeId',@RecordTypeId,'WhatId',@WhatId,'UserOpco__c',@UserOpco__c)
+ENDIF
+UpdateDE("RS_Activities_Creation",1,"UUID", @UUID, "ActivityIsCreated","True")
+next @i
+ENDIF
+]%%
